@@ -6,8 +6,8 @@ import icon from '../../resources/icon.png?asset'
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 600,
-    height: 200,
+    width: 450,
+    height: 130,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -20,7 +20,7 @@ function createWindow(): void {
   })
 
   // Custom Position for My (@0xRadioAc7iv's) Device
-  mainWindow.setBounds({ x: 930, y: 610 })
+  mainWindow.setBounds({ x: 1080, y: 680 })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -29,6 +29,18 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  ipcMain.handle('fetch-contributions', async () => {
+    try {
+      const response = await fetch(
+        `${process.env.WORKER_URL}?username=${process.env.GITHUB_USERNAME}`
+      )
+      const data = await response.json()
+      return { success: true, data }
+    } catch (error: any) {
+      return { success: false, error: error.message }
+    }
   })
 
   // HMR for renderer base on electron-vite cli.
@@ -54,9 +66,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-
   createWindow()
 
   app.on('activate', function () {
@@ -74,6 +83,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
