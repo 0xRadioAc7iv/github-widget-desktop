@@ -4,7 +4,7 @@ function App(): JSX.Element {
   const [weeks, setWeeks] = useState<any[]>([])
   const [error, setError] = useState(null)
 
-  useEffect(() => {
+  const updateContributions = () => {
     window.api
       .fetchContributions()
       .then((response) => {
@@ -12,6 +12,10 @@ function App(): JSX.Element {
         else setError(response.error)
       })
       .catch((error) => setError(error))
+  }
+
+  useEffect(() => {
+    updateContributions()
   }, [])
 
   return (
@@ -19,7 +23,10 @@ function App(): JSX.Element {
       {error ? (
         <div>Error fetching contributions</div>
       ) : (
-        <div className="bg-[#0f0f0f] grid grid-flow-col auto-cols-max gap-1 p-3">
+        <div
+          className="bg-[#0f0f0f] grid grid-flow-col auto-cols-max gap-1 p-3"
+          onClick={updateContributions}
+        >
           {weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="grid grid-rows-7 gap-1">
               {week.contributionDays.map((day: any, dayIndex: number) => (
