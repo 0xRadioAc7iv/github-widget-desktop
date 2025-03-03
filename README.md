@@ -69,7 +69,7 @@ npm run build:linux
 npm run build:mac
 ```
 
-9. The final executable will be created at "app/dist/{your-os}-unpacked/github_widget_desktop.exe"
+9. The final executable will be created at the directory "app/dist/{your-os}-unpacked/"
 
 ## License
 
