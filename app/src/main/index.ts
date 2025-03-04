@@ -10,7 +10,6 @@ function createWindow(): void {
     height: 130,
     show: false,
     autoHideMenuBar: true,
-    alwaysOnTop: true,
     transparent: true,
     backgroundColor: '#00000000',
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -24,14 +23,6 @@ function createWindow(): void {
 
   // Custom Position for My (@0xRadioAc7iv's) Device
   mainWindow.setBounds({ x: 1080, y: 680 })
-
-  mainWindow.on('blur', () => {
-    mainWindow.setOpacity(0.05)
-  })
-
-  mainWindow.on('focus', () => {
-    mainWindow.setOpacity(1.0)
-  })
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
